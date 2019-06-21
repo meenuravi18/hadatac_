@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Excel File Preview</title>
+        <link rel="shortcut icon" href="">
+        <script type="text/javascript" src="/hadatac/assets/lib/jquery/jquery.js"></script>
+        <script type="text/javascript" src="/hadatac/assets/javascripts/moment-with-locales.js"></script>
+        <script type="text/javascript" src="/hadatac/assets/lib/bootstrap/js/bootstrap.js"></script>
+        <script type="text/javascript" src="/hadatac/assets/javascripts/bootstrap-datetimepicker.js"></script>
+        
+        <!-- <script type="text/javascript" src="/hadatac/assets/javascript/routes.js" defer="defer"></script>
+         I replaced because it was pointed to javascript no javascripts -mj
+        -->
+        <script type="text/javascript" src="/hadatac/assets/javascripts/routes.js" defer="defer"></script>
+
+        <!-- Load React.
+        <script src="https://unpkg.com/react@16/umd/react.production.min.js" crossorigin></script>
+        <script src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js" crossorigin></script>
+        -->
+
+        <link rel="stylesheet" href="/hadatac/assets/lib/bootstrap/css/bootstrap.css">
+        <link href="/hadatac/assets/css/upload.css" rel="stylesheet">
+        <link href="/hadatac/assets/css/main.css" rel="stylesheet">
+
+		<link rel="stylesheet" type="text/css" href="/hadatac/assets/lib/dhtmlx/css/dhtmlx.css"/>
+        <link rel="stylesheet" type="text/css" href="/hadatac/assets/stylesheets/bootstrap-datetimepicker.css"/>
+		<script src="/hadatac/assets/lib/dhtmlx/js/dhtmlx.js"></script>
+		<script type="text/stylesheet" rel="stylesheet" media="print" href="/hadatac/assets/css/printfriendly.css"></script>
+
+    </head>
+
+
+      
+        
+        <body>
+            <script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
+        
+            <script>
+                /* set up XMLHttpRequest */
+                var url = "chear_data_covriates_hsph_revised_3.xlsx";
+                var oReq = new XMLHttpRequest();
+                oReq.open("GET", url, true);
+                oReq.responseType = "arraybuffer";
+        
+                oReq.onload = function(e) {
+                    var arraybuffer = oReq.response;
+        
+                    /* convert data to binary string */
+                    var data = new Uint8Array(arraybuffer);
+                    var arr = new Array();
+                    for (var i = 0; i != data.length; ++i) arr[i] = String.fromCharCode(data[i]);
+                    var bstr = arr.join("");
+        
+                    /* Call XLSX */
+                    var workbook = XLSX.read(bstr, {
+                        type: "binary"
+                    });
+        
+                    /* DO SOMETHING WITH workbook HERE */
+                    var first_sheet_name = workbook.SheetNames[2];
+                    /* Get worksheet */
+                    var worksheet = workbook.Sheets[first_sheet_name];
+                    console.log(XLSX.utils.sheet_to_json(worksheet, {
+                        raw: true
+                    }));
+                    var xlarray=XLSX.utils.sheet_to_json(worksheet, {
+                        raw: true
+                    });
+                    console.log(xlarray.length);
+                    console.log(xlarray[0]['VARNAME ']);
+                }
+        
+                oReq.send();
+            </script>
+        </body>
+        
+</html>
